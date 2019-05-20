@@ -1,0 +1,8 @@
+TODO's
+
+* Agregar validacion por endpoints a configs
+* Agregar test dummys de integracion para endpoints de QR Code
+* Agregar tabla y logica para redencion de QR Codes
+* Chequear si se puede enviar datos de la entidad prestadora pueden viajar en el body
+* Agregar docker compose con soporte java 8 y mysql alpine
+* Agregar tests

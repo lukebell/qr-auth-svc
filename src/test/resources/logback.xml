@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- PROPERTIES -->
+    <property name="layout" value="%d{HH:mm:ss.SSS} %-5level [%thread][%logger{0}] %m%n" />
+    <property name="logFile" value="qr-auth-svc-test" />
+
+    <!-- APPENDERS -->
+    <appender name="LOG_FILE"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/${logFile}.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/${logFile}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${layout}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="LOG_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${layout}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- LOGGERS -->
+    <logger name="ar.com.svc" level="DEBUG" additivity="false">
+        <appender-ref ref="LOG_STDOUT" />
+    </logger>
+
+    <logger name="ar.com.svc" level="INFO" additivity="false">
+        <appender-ref ref="LOG_FILE" />
+    </logger>
+
+    <logger name="org.springframework.jdbc" level="ERROR" additivity="false">
+        <appender-ref ref="LOG_STDOUT"/>
+    </logger>
+
+    <logger name="io.swagger" level="DEBUG" additivity="false">
+        <appender-ref ref="LOG_STDOUT"/>
+    </logger>
+
+    <logger name="org.springframework" level="DEBUG" />
+    <logger name="org.springframework.transaction" level="WARN" />
+    <logger name="org.glassfish.jersey.tracing" level="ALL" />
+    <logger name="com.zaxxer.hikari" level="INFO" />
+
+    <root level="ERROR">
+        <appender-ref ref="LOG_FILE" />
+    </root>
+
+    <root level="INFO">
+        <appender-ref ref="LOG_FILE" />
+    </root>
+
+    <root level="DEBUG">
+        <appender-ref ref="LOG_STDOUT" />
+    </root>
+
+</configuration>

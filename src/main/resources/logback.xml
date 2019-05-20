@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="true">
+
+    <!-- PROPERTIES -->
+    <property name="logFile" value="qr-auth-svc"/>
+
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n"/>
+    <property name="CONSOLE_LOG_PATTERN" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%27.27t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n"/>
+
+    <!-- APPENDERS -->
+    <appender name="LOG_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/${logFile}.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/${logFile}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="LOG_FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>logs/${logFile}-error.log</File>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>logs/${logFile}-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+        <maxHistory>30</maxHistory>
+    </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- LOGGERS -->
+    <logger name="ar.com.svc" level="DEBUG" additivity="false">
+        <appender-ref ref="LOG_STDOUT" />
+    </logger>
+
+    <logger name="ar.com.svc" level="INFO" additivity="false">
+        <appender-ref ref="LOG_FILE" />
+    </logger>
+
+    <logger name="org.springframework.jdbc" level="ERROR" additivity="false">
+        <appender-ref ref="LOG_STDOUT"/>
+    </logger>
+
+    <logger name="io.swagger" level="DEBUG" additivity="false">
+        <appender-ref ref="LOG_STDOUT"/>
+    </logger>
+
+    <logger name="org.springframework" level="DEBUG" />
+    <logger name="org.springframework.transaction" level="WARN" />
+    <logger name="org.glassfish.jersey.tracing" level="ALL" />
+    <logger name="com.zaxxer.hikari" level="INFO" />
+
+    <root level="ERROR">
+        <appender-ref ref="LOG_FILE_ERROR" />
+    </root>
+
+    <root level="INFO">
+        <appender-ref ref="LOG_FILE" />
+    </root>
+
+    <root level="DEBUG">
+        <appender-ref ref="LOG_STDOUT" />
+    </root>
+</configuration>
